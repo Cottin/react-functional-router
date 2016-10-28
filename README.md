@@ -1,4 +1,3 @@
-Routing can get a bit complex sometimes... In some apps, using the query string brings you a long way. 
 
 # React Functional Router
 What if you could only use the query-string for routing?
@@ -45,21 +44,29 @@ The idea is that these two building blocks are quite enough for building non-hug
 And because of this simplification, thinking about routing becomes much simpler :)
 
 Creating a link to...
-...open a page: `Link {page: 'profile'}, 'Profile'`
-...open a sidepanel: `Link {to: assoc('sidepanel', true)}, 'Open sidepanel'`
 
-**The point is that** if you can think of the current url as an object, you can supply a simple function to change that url. And that's the whole point :)
+- open a page: `Link {page: 'profile'}, 'Profile'`
+- open a sidepanel: `Link {to: assoc('sidepanel', true)}, 'Open sidepanel'`
+
+**The point is that** if you can think of the current url as an object, you can supply a simple function to change that url. :)
 
 Also, the router assumes you are using some kind of immutable data and shouldComponentUpdate optimizations. Therefore, it provides you with an `onChange`event that lets you update your data-store when the url changes. However, it provides you with only the delta of changes so that you can do a minimal update to your data-store.
 
 ```
-ex. TODO
+URL before clicking a link to open the sidepanel:
+www.my-app.com/week?date=2016-10-31
+
+URL after:
+www.my-app.com/week?date=2016-10-31&showSidepanel=true
+
+onChange = (delta) ->
+	# called with delta = {showSidepanel: true}
 ```
+
 
 ## Examples
 
 ```
-...
 render: ->
 	div {},
 

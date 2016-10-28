@@ -1,6 +1,6 @@
 
 # React Functional Router
-- What if you dont't need the most fancy router with pattern-matching, nested routes and a separate route-configuration?
+- What if you don't need the most fancy router with pattern-matching, nested routes and a separate route-configuration?
 - What if the query-string would kind of be enough for your routing needs?
 - What if you could think of and interact with that query string as a simple object?
 
@@ -26,7 +26,7 @@ If you just have some basic routing needs in your application, React-Functional-
 
 
 ## How it works
-This router simplifies routing to two small building blocks "page" and "query"
+React-Functional-Router simplifies routing to two small building blocks "page" and "query"
 
 ```
   www.my-app.com/users?sort=asc&sidepanel=true
@@ -36,7 +36,7 @@ This router simplifies routing to two small building blocks "page" and "query"
                              query
 ```
 
-The idea is that these two building blocks are quite enough for building non-huge apps. When you interact with this router, the page is just a string and the query is just a javascript object like so:
+The idea is that these two building blocks are quite enough for building non-huge apps. When you interact with the router, the `page` is just a string and the `query` is just a javascript object like so:
 
 ```
 {page: 'user', query: {sort: 'asc', sidepanel: true}}
@@ -49,19 +49,21 @@ Creating a link to...
 - open a page: `Link {page: 'profile'}, 'Profile'`
 - open a sidepanel: `Link {to: assoc('sidepanel', true)}, 'Open sidepanel'`
 
-**The point is that** if you can think of the current url as an object, you can supply a simple function to change that url. :)
+The point is that if you can think of the current url as an object, you can supply a simple function to change that url.
 
 Also, the router assumes you are using some kind of immutable data and shouldComponentUpdate optimizations. Therefore, it provides you with an `onChange`event that lets you update your data-store when the url changes. However, it provides you with only the delta of changes so that you can do a minimal update to your data-store.
 
 ```
-URL before clicking a link to open the sidepanel:
+// URL before clicking a link to open the sidepanel:
 www.my-app.com/week?date=2016-10-31
 
-URL after:
+// URL after:
 www.my-app.com/week?date=2016-10-31&showSidepanel=true
 
+// Your onChange callback is called with:
+// delta = {showSidepanel: true}
 onChange = (delta) ->
-	# called with delta = {showSidepanel: true}
+	...
 ```
 
 
@@ -71,11 +73,11 @@ onChange = (delta) ->
 render: ->
 	div {},
 
-		# using functions to 
+		# using functions to create links changing the query string
 		Link {to: assoc('showPanel', true)}, 'Open panel'
 		Link {to: dissoc('showPanel')}, 'Hide panel'
 
-		# using page to change the [...] part of the url
+		# using page to change the "page" part of the url
 		# e.g.  www.my-app.com/[...]?a=1&b=2
 		Link {page: ''}, 'Goto Home page'
 		Link {page: 'profile'}, 'Goto Profile page'

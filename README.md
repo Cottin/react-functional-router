@@ -4,7 +4,7 @@
 - What if the query-string would kind of be enough for your routing needs?
 - What if you could think of and interact with that query string as a simple object?
 
-You wouldn't have to do any regexp pattern matching to figure out where you are, you just destruct the part you want.
+You wouldn't have to do any regexp matching to figure out where you are, you just destruct the part you want.
 
 ```
 {showPopup} = query

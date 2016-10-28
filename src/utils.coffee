@@ -5,18 +5,18 @@
 # Returns true if the path conforms to the very simplified url patterns
 # supported by react-functional-router
 exports.isValidPath = isValidPath = (path) ->
-	# /							OK
-	# /?a=1					OK
+	# /             OK
+	# /?a=1         OK
 
-	# /abc					OK
-	# /abc?a=1			OK
-	# /abc/					OK
-	# /abc/?a=1			OK
+	# /abc          OK
+	# /abc?a=1      OK
+	# /abc/         OK
+	# /abc/?a=1     OK
 
-	# /abc/def			NOT OK
-	# /abc/def?a=1	NOT OK
-	# /abc/def/			NOT OK
-	# /abc/def/?a=1	NOT OK
+	# /abc/def      NOT OK
+	# /abc/def?a=1  NOT OK
+	# /abc/def/     NOT OK
+	# /abc/def/?a=1 NOT OK
 
 	# remove potential starting and trailing slashes
 	trimmedPath = cc replace(/^\//, ''), replace(/\/$/, ''), path

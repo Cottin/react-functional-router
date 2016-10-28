@@ -17,9 +17,6 @@ app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// NOTE: removed 'localhost' which was second argument.
-//				Like so you can get hotreload from other device
-//				if you connect to your computers ip or mycomputer.local 
 app.listen(3000, function(err) {
   if (err) {
     console.log(err);

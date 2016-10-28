@@ -2,7 +2,11 @@
 {always, any, has, identity, length, merge, omit, remove} = require 'ramda' #auto_require:ramda
 
 
+# Renders <a href> tag that also has a onClick handler that performs a "modern"
+# navigate using push-state
 module.exports = Link = createClass
+	displayName: 'Link'
+
 	propTypes:
 		to: func
 		page: string

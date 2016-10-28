@@ -1,89 +1,49 @@
 React = require 'react'
-{DOM: {div}, PropTypes: {object, func}, Children, createClass, createElement: _} = React = require 'react' #auto_require:react
+{DOM: {div}, PropTypes: {object, func}, Children, createClass, createElement: _} = React = require 'react'
+PureRenderMixin = require 'react-addons-pure-render-mixin'
 {RouterProvider, Link} = require 'react-functional-router'
-{assoc, dissoc, merge, test} = R = require 'ramda' #auto_require:ramda
+RouterProvider_ = React.createFactory RouterProvider
+{assoc, evolve, has, ifElse, inc, map, sort} = R = require 'ramda' #auto_require:ramda
+{cc} = require 'ramda-extras'
 
-class Store
+{createStore, StoreProvider, connect} = require './Flux'
 
-	constructor: ->
-		@state =
-			page: ''
-			query: {}
-		@listeners = []
-		window.setTimeout @notify, 1000
-
-	mutate: (path, value) ->
-		path_ = if R.is String, path then split '.', path else path
-		console.log "Store.mutate", path, value
-		console.log "state before", @state
-		if value == undefined
-			@state = dissoc dropLast(1, path_), @state
-		else
-			@state = assoc path_, value, @state
-		console.log "state after", @state
-
-	subscribe: (listener) ->
-		@listeners.push listener
-		return () =>
-			@listeners = @listeners.filter (l) -> l != listener
-
-	notify: =>
-		@listeners.forEach (l) -> l @state
-
-StoreProvider = createClass
-	displayName: 'StoreProvider'
-
-	propTypes:
-		store: object
-
-	childContextTypes:
-		store: object
-
-	getChildContext: ->
-		store: @props.store
-
-	render: ->
-		Children.only(@props.children)
-
-connect = (displayName, component, mapping) -> createClass
-	displayName: displayName
-
-	contextTypes:
-		router: object.isRequired
-
-	getInitialState: ->
-		ymap mapping, -> null
-
-	componentWillMount: ->
-		@_unsubscribe = @context.router.subscribe(@storeChanged)
-
-	componentWillUnmount: ->
-		@_unsubscribe()
-
-	render: ->
-		_ component, merge(@state, @props)
-
-	storeChanged: (newState) ->
-		data = ymap mapping, (path) -> getPath path, newState
-		@setState data
-
+##### This is a simple example show-casing how react-functional-router works
 
 HomePage = createClass
 	displayName: 'HomePage'
+
+	mixins: [PureRenderMixin]
 
 	render: ->
 		console.log 'RENDER HomePage'
 		div {}, 'Home page'
 
-TestPage = createClass
-	displayName: 'TestPage'
+NumbersPage = createClass
+	displayName: 'NumbersPage'
+
+	mixins: [PureRenderMixin]
 
 	render: ->
-		console.log 'RENDER TestPage'
-		div {}, 'Test page'
+		console.log 'RENDER NumbersPage'
+		if @props.sort == 'desc'
+			differ = (a, b) -> b - a
+		else
+			differ = (a, b) -> a - b
+
+		div {},
+			_ Link, {to: assoc('sort', 'asc')}, 'Sort 1->9'
+			_ Link, {to: assoc('sort', 'desc')}, 'Sort 9->1'
+			cc map(@renderNumber), sort(differ), @props.numbers
+
+	renderNumber: (n) -> div {key: n}, n
+
+NumbersPage_ = connect NumbersPage, {numbers: 'numbers', sort: 'query.sort'}
 
 ProfilePage = createClass
 	displayName: 'ProfilePage'
+
+	mixins: [PureRenderMixin]
 
 	render: ->
 		console.log 'RENDER ProfilePage'
@@ -92,45 +52,36 @@ ProfilePage = createClass
 Body = createClass
 	displayName: 'Body'
 
+	mixins: [PureRenderMixin]
+
 	render: ->
 		{page} = @props
+		console.log 'RENDER Body'
 		div {},
+			div {}, 'Counter: ' + @props.counter
 			if page == '' then _ HomePage
-			else if page == 'test' then _ TestPage
+			else if page == 'numbers' then _ NumbersPage_
 			else if page == 'profile' then _ ProfilePage
 			else div {}, '404 - Page not found'
 
-Body_ = connect 'Body_', Body,
-	page: 'page'
+Body_ = connect Body, {page: 'page', counter: 'query.counter'}
 
+store = createStore {page: '', query: {}, numbers: [1,2,3,4,5,6,7]}
+window.store = store # expose for easier debugging
 
-Popup = createClass
-	displayName: 'Popup'
+onRouterChange = (diff) -> store.mutate diff
 
-	render: ->
-		console.log 'RENDER Popup'
-		div {}, 'Popup is shown!'
-
-
-
-store = new Store()
-window.store = store
-
-setPage = (page) -> store.mutate 'page', page
-setQueryPart = (path, value) -> store.mutate ['query', path], value
+assocOrInc = ifElse has('counter'), evolve({counter: inc}), assoc('counter', 0)
 
 module.exports = App = createClass
 	displayName: 'App'
 
-	getInitialState: ->
-		page: ''
-		query: {}
-
 	render: ->
 		div {},
-			_ RouterProvider, {setPage, setQueryPart},
+			_ RouterProvider, {onRouterChange},
 				_ StoreProvider, {store},
 					div {},
-						div {},
-							_ Link, {to: assoc('showPopup', true)}, 'Open popup'
-						_ Body
+						_ Link, {page: ''}, 'Go Home'
+						_ Link, {page: 'numbers'}, 'Go to Numbers page'
+						_ Link, {to: assocOrInc}, 'Add'
+						_ Body_

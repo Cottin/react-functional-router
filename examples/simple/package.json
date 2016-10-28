@@ -1,13 +1,9 @@
 {
   "name": "react-functionl-router-examples-simple",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Just an example",
   "scripts": {
-    "clean": "rimraf dist",
-    "build:webpack": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
-    "build": "npm run clean && npm run build:webpack",
-    "start": "node devServer.js",
-    "lint": "eslint src"
+    "start": "node devServer.js"
   },
   "keywords": [
     "react",
@@ -39,6 +35,7 @@
   },
   "dependencies": {
     "react": "^0.14.3",
+    "react-addons-pure-render-mixin": "^15.3.2",
     "react-dom": "^0.14.3"
   }
 }

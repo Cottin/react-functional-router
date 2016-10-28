@@ -25,10 +25,10 @@ exports.isValidPath = isValidPath = (path) ->
 
 # s -> s
 # react-functional-router defines the first part after the slash as the "page"
-# and this function extracts that part from the location.path
+# and this function extracts that part from the location.pathname
 # e.g. extractPage '/my-page/' returns 'my-page'
 exports.extractPage = extractPage = (locationPath) ->
-	return cc replace(/^\//, ''), replace(/\/$/, ''), locationPath
+	cc replace(/^\//, ''), replace(/\/$/, ''), replace(/\?.*/, ''), locationPath
 
 # s -> {k:v}
 # Pass location.search to this function and it will return you the query string

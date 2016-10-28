@@ -20,7 +20,7 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.coffee'],
     alias: {
-      'react-functional-router': path.join(__dirname, '../../src'),
+      'react-functional-router': path.join(__dirname, '../../src')
     }
   },
   module: {
@@ -28,7 +28,10 @@ module.exports = {
     {
       test: /\.coffee?$/,
       loaders: ['babel', 'coffee-loader'],
-      include: [path.join(__dirname, 'src'), path.join(__dirname, '../../src')]
+      include: [
+        path.join(__dirname, 'src'),
+        path.join(__dirname, '../../src')
+      ]
     },
     // {
     //   test: /\.coffee?$/,

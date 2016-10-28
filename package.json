@@ -7,9 +7,8 @@
     "example": "examples"
   },
   "dependencies": {
-    "fbjs": "^0.8.5",
-    "ramda-extras": "^0.2.5",
     "ramda": "^0.22.1",
+    "ramda-extras": "^0.2.5",
     "react": "^15.3.2"
   },
   "devDependencies": {
@@ -33,7 +32,7 @@
     "webpack-hot-middleware": "^2.6.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha 'src/**/test*.coffee' --watch --compilers coffee:coffee-script/register"
   },
   "repository": {
     "type": "git",

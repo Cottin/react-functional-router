@@ -1,15 +1,16 @@
 
 # React Functional Router
-What if you could only use the query-string for routing?
-What if you could think of that query string as a simple object?
+- What if you dont't need the most fancy router with pattern-matching, nested routes and a separate route-configuration?
+- What if the query-string would kind of be enough for your routing needs?
+- What if you could think of and interact with that query string as a simple object?
 
-- You wouldn't have to do any regexp pattern matching to figure out where you are, you just destruct the part you want.
+You wouldn't have to do any regexp pattern matching to figure out where you are, you just destruct the part you want.
 
 ```
 {showPopup} = query
 ```
 
-- You wouldn't have to do any concatenation to create an href, you just supply a function.
+You wouldn't have to do any concatenation to create an href, you just supply a function.
 
 ```
 newQuery = assoc('showPopup', true, query)

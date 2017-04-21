@@ -1,16 +1,23 @@
 React = require 'react'
-{DOM: {div}, PropTypes: {object, func}, Children, createClass, createElement: _} = React = require 'react'
+{DOM: {div}, Children, createElement: _} = React = require 'react'
+createReactClass = require 'create-react-class'
 PureRenderMixin = require 'react-addons-pure-render-mixin'
 {RouterProvider, Link} = require 'react-functional-router'
 RouterProvider_ = React.createFactory RouterProvider
-{assoc, evolve, has, ifElse, inc, map, sort} = R = require 'ramda' #auto_require:ramda
+{assoc, evolve, has, ifElse, inc, map, sort, where} = R = require 'ramda' #auto_require:ramda
 {cc} = require 'ramda-extras'
 
 {createStore, StoreProvider, connect} = require './Flux'
 
 ##### This is a simple example show-casing how react-functional-router works
 
-HomePage = createClass
+# note: there is a lot of warnings like this one:
+# "Calling PropTypes validators directly is not supported by the..."
+# I can't see anywhere where we use validators directly. But it seems to be in
+# the example only, when using react-functional-router in another projet,
+# I don't get this issue, so I'm leaving it for now.
+
+HomePage = createReactClass
 	displayName: 'HomePage'
 
 	mixins: [PureRenderMixin]
@@ -19,7 +26,7 @@ HomePage = createClass
 		console.log 'RENDER HomePage'
 		div {}, 'Home page'
 
-NumbersPage = createClass
+NumbersPage = createReactClass
 	displayName: 'NumbersPage'
 
 	mixins: [PureRenderMixin]
@@ -40,7 +47,7 @@ NumbersPage = createClass
 
 NumbersPage_ = connect NumbersPage, {numbers: 'numbers', sort: 'query.sort'}
 
-ProfilePage = createClass
+ProfilePage = createReactClass
 	displayName: 'ProfilePage'
 
 	mixins: [PureRenderMixin]
@@ -49,7 +56,7 @@ ProfilePage = createClass
 		console.log 'RENDER ProfilePage'
 		div {}, 'Profile page'
 
-Body = createClass
+Body = createReactClass
 	displayName: 'Body'
 
 	mixins: [PureRenderMixin]
@@ -73,7 +80,7 @@ onRouterChange = (diff) -> store.mutate diff
 
 assocOrInc = ifElse has('counter'), evolve({counter: inc}), assoc('counter', 0)
 
-module.exports = App = createClass
+module.exports = App = createReactClass
 	displayName: 'App'
 
 	render: ->

@@ -1,4 +1,6 @@
-{PropTypes: {object, func}, Children, createClass, createElement: _} = React = require 'react'
+{Children, createElement: _} = React = require 'react'
+createReactClass = require 'create-react-class'
+{object, func} = require 'prop-types'
 {ymap, getPath, change} = require 'ramda-extras'
 
 
@@ -29,7 +31,7 @@ exports.createStore = createStore = (initialData) ->
 
 
 # Use at root of your application to inject store to context
-exports.StoreProvider = StoreProvider = createClass
+exports.StoreProvider = StoreProvider = createReactClass
 	displayName: 'StoreProvider'
 
 	propTypes:
@@ -48,7 +50,7 @@ exports.StoreProvider = StoreProvider = createClass
 # Like redux's connect, wraps a "dumb" component and makes it into a container
 # that has a mapping to some data in the store and gets re-rendered if that
 # data changes.
-exports.connect = connect = (component, mapping) -> createClass
+exports.connect = connect = (component, mapping) -> createReactClass
 	displayName: "Connect(#{getDisplayName(component)})"
 
 	contextTypes:

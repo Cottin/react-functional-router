@@ -1,10 +1,12 @@
-{PropTypes: {func, object, string}, DOM: {a}, createClass} = require 'react'
+{DOM: {a}} = require 'react'
+createReactClass = require 'create-react-class'
+{func, object, string} = require 'prop-types'
 {always, any, has, identity, length, merge, omit, remove} = require 'ramda' #auto_require:ramda
 
 
 # Renders <a href> tag that also has a onClick handler that performs a "modern"
 # navigate using push-state
-module.exports = Link = createClass
+module.exports = Link = createReactClass
 	displayName: 'Link'
 
 	propTypes:

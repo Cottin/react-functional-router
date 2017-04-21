@@ -13,8 +13,11 @@
     "example": "examples"
   },
   "dependencies": {
+    "create-react-class": "^15.5.2",
+    "prop-types": "^15.5.8",
     "ramda": "^0.22.1",
-    "ramda-extras": "^0.2.5"
+    "ramda-extras": "^0.2.5",
+    "react": "^15.5.4"
   },
   "peerDependencies": {
     "react": "^15.4.1"

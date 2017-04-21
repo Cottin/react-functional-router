@@ -1,6 +1,6 @@
 {
   "name": "react-functionl-router-examples-simple",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Just an example",
   "scripts": {
     "start": "node devServer.js"

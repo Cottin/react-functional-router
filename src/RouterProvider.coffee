@@ -1,9 +1,11 @@
-{PropTypes: {object, func}, Children, createClass} = React = require 'react'
+{Children} = React = require 'react'
+createReactClass = require 'create-react-class'
+{object, func} = require 'prop-types'
 createRouter = require './createRouter'
 
 # A "Provider" that creates a router and injects it in reacts context.
 # Use this component close at the root of your application.
-module.exports = RouterProvider = createClass
+module.exports = RouterProvider = createReactClass
 	displayName: 'RouterProvider'
 
 	# Getting warnings from this and I don't understand why
@@ -12,7 +14,7 @@ module.exports = RouterProvider = createClass
 	# http://jsbin.com/watozotove/edit?html,js,console,output
 	# http://jsbin.com/nehomixeho/edit?html,js,console,output  <-- 15.3.2
 	propTypes:
-		onRouterChange: React.PropTypes.func
+		onRouterChange: func
 
 	childContextTypes:
 		router: object

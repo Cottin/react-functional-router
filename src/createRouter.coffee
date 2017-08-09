@@ -21,9 +21,9 @@ module.exports = ({onChange}) ->
 		page = utils.extractPage location.pathname
 		query = utils.extractQuery location.search
 		delta = diff _state, {page, query}
-		_state = change delta, _state
 		if isEmpty delta then return
-		else _listeners.forEach (l) -> l _state
+		_state = change delta, _state
+		_listeners.forEach (l) -> l _state, delta
 		return true
 
 	window.addEventListener 'popstate', _onUrlChange

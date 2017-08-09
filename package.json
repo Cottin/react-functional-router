@@ -1,6 +1,6 @@
 {
   "name": "react-functional-router",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A very simple router for react with a functional api",
   "main": "lib/index.js",
   "scripts": {

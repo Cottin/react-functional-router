@@ -1,7 +1,7 @@
 {DOM: {a}} = require 'react'
 createReactClass = require 'create-react-class'
 {func, object, string} = require 'prop-types'
-{always, any, has, identity, length, merge, omit, remove} = require 'ramda' #auto_require:ramda
+{always, any, has, identity, isNil, length, merge, omit, remove} = require 'ramda' #auto_require:ramda
 
 
 # Renders <a href> tag that also has a onClick handler that performs a "modern"
@@ -40,6 +40,8 @@ module.exports = Link = createReactClass
 		url = router.buildUrl to, page
 		newProps = merge omit(['to', 'page', 'onClick'], @props),
 			href: url
-			onClick: router.navigateCallback url
+			onClick: (e) ->
+				if !isNil onClick then onClick(e)
+				router.navigateCallback(url)(e)
 		a newProps
 

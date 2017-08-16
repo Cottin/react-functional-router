@@ -4,7 +4,7 @@ createReactClass = require 'create-react-class'
 PureRenderMixin = require 'react-addons-pure-render-mixin'
 {RouterProvider, Link} = require 'react-functional-router'
 RouterProvider_ = React.createFactory RouterProvider
-{assoc, evolve, has, ifElse, inc, map, sort, where} = R = require 'ramda' #auto_require:ramda
+{assoc, evolve, has, identity, ifElse, inc, map, sort, where} = R = require 'ramda' #auto_require:ramda
 {cc} = require 'ramda-extras'
 
 {createStore, StoreProvider, connect} = require './Flux'
@@ -91,4 +91,6 @@ module.exports = App = createReactClass
 						_ Link, {page: ''}, 'Go Home'
 						_ Link, {page: 'numbers'}, 'Go to Numbers page'
 						_ Link, {to: assocOrInc}, 'Add'
+						_ Link, {page: '', to: identity}, 'Go Home keep queries'
+						_ Link, {page: '', to: identity, onClick: -> alert('Hello there')}, 'Go Home and alert'
 						_ Body_

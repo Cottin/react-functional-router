@@ -2,7 +2,7 @@ React = require 'react'
 {DOM: {div}, Children, createElement: _} = React = require 'react'
 createReactClass = require 'create-react-class'
 PureRenderMixin = require 'react-addons-pure-render-mixin'
-{RouterProvider, Link} = require 'react-functional-router'
+{createRouter, RouterProvider, Link} = require 'react-functional-router'
 RouterProvider_ = React.createFactory RouterProvider
 {assoc, evolve, has, identity, ifElse, inc, map, sort, where} = R = require 'ramda' #auto_require:ramda
 {cc} = require 'ramda-extras'
@@ -77,6 +77,7 @@ store = createStore {page: '', query: {}, numbers: [1,2,3,4,5,6,7]}
 window.store = store # expose for easier debugging
 
 onRouterChange = (diff) -> store.mutate diff
+router = createRouter {onChange: onRouterChange}
 
 assocOrInc = ifElse has('counter'), evolve({counter: inc}), assoc('counter', 0)
 
@@ -85,7 +86,7 @@ module.exports = App = createReactClass
 
 	render: ->
 		div {},
-			_ RouterProvider, {onRouterChange},
+			_ RouterProvider, {router},
 				_ StoreProvider, {store},
 					div {},
 						_ Link, {page: ''}, 'Go Home'

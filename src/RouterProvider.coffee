@@ -1,7 +1,6 @@
 {Children} = React = require 'react'
 createReactClass = require 'create-react-class'
-{object, func} = require 'prop-types'
-createRouter = require './createRouter'
+{object} = require 'prop-types'
 
 # A "Provider" that creates a router and injects it in reacts context.
 # Use this component close at the root of your application.
@@ -14,16 +13,13 @@ module.exports = RouterProvider = createReactClass
 	# http://jsbin.com/watozotove/edit?html,js,console,output
 	# http://jsbin.com/nehomixeho/edit?html,js,console,output  <-- 15.3.2
 	propTypes:
-		onRouterChange: func
+		router: object
 
 	childContextTypes:
 		router: object
 
 	getChildContext: ->
-		router: @router
-
-	componentWillMount: ->
-		@router = createRouter {onChange: @props.onRouterChange}
+		router: @props.router
 
 	render: ->
 		Children.only(@props.children)

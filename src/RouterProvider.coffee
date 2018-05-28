@@ -1,25 +1,29 @@
-{Children} = React = require 'react'
-createReactClass = require 'create-react-class'
-{object} = require 'prop-types'
+React = require 'react'
+{prop, props} = R = require 'ramda' #auto_require:ramda
+{} = require 'ramda-extras' #auto_require:ramda-extras
 
-# A "Provider" that creates a router and injects it in reacts context.
-# Use this component close at the root of your application.
-module.exports = RouterProvider = createReactClass
-	displayName: 'RouterProvider'
+Context = require './Context'
 
-	# Getting warnings from this and I don't understand why
-	# https://facebook.github.io/react/warnings/dont-call-proptypes.html
-	# Tried to reproduce in smaller code base but faild:
-	# http://jsbin.com/watozotove/edit?html,js,console,output
-	# http://jsbin.com/nehomixeho/edit?html,js,console,output  <-- 15.3.2
-	propTypes:
-		router: object
+_ = React.createElement
 
-	childContextTypes:
-		router: object
 
-	getChildContext: ->
-		router: @props.router
+class RouterProvider extends React.Component 
+	constructor: (props) ->
+		super(props)
+		if !@props.router
+			throw new Error 'RouterProvider expected prop \'router\''
+		@router = @props.router
+		@state = {url: @props.router.getState(), router: @router}
+
+	componentDidMount: ->
+		@unsubscribe = @router.subscribe (state, delta) =>
+			@setState {url: state}
+
+	componentWillUnmount: -> @router.destroy()
 
 	render: ->
-		Children.only(@props.children)
+		_ Context.Provider, {value: @state},
+			@props.children
+
+
+module.exports = RouterProvider

@@ -1,89 +1,132 @@
+Very simple router for react with a functional api
 
-# React Functional Router
-- What if you don't need the most fancy router with pattern-matching, nested routes and a separate route-configuration?
-- What if the query-string would kind of be enough for your routing needs?
-- What if you could think of and interact with that query string as a simple object?
+#### What if the url was just an object?
 
-You wouldn't have to do any regexp matching to figure out where you are, you just destruct the part you want.
-
+Getting the parts of the url would just be destructuring:
 ```
-{showPopup} = query
-```
+// myapp.com/Reports/2017/feb?sort=asc&items=2&sidepanel=true
 
-You wouldn't have to do any concatenation to create an href, you just supply a function.
+const {path0: page, path1: year, path2: month, sort, items, sidepanel} = url
 
-```
-newQuery = assoc('showPopup', true, query)
-```
-
-This is essentially what React-Functional-Router lets you do :)
-
-
-## Motivation
-The goto alternative React-Router is quite big and prior to version 4, it feels somewhat over-engineered. 
-
-If you just have some basic routing needs in your application, React-Functional-Router can give that to you at a fraction of the complexity. Read through the code for yourself, it's just around 200 lines.
-
-
-## How it works
-React-Functional-Router simplifies routing to two small building blocks "page" and "query"
-
-```
-  www.my-app.com/users?sort=asc&sidepanel=true
-                   ^           ^
-                   |           |
-                 page          |
-                             query
+// page = 'Report'
+// year = 2017
+// month = 'feb'
+// sort = 'asc'
+// items = 2
+// sidepanel = true
 ```
 
-The idea is that these two building blocks are quite enough for building non-huge apps. When you interact with the router, the `page` is just a string and the `query` is just a javascript object like so:
-
+Changing the url would just be applying a function to the current url:
+ 
 ```
-{page: 'user', query: {sort: 'asc', sidepanel: true}}
-```
+// currentUrl = myapp.com/Reports/2017/feb?sort=asc&items=2&sidepanel=true
 
-And because of this simplification, thinking about routing becomes much simpler :)
+newUrl = R.assoc('sidepanel', false, currentUrl)
 
-Creating a link to...
-
-- open a page: `Link {page: 'profile'}, 'Profile'`
-- open a sidepanel: `Link {to: assoc('sidepanel', true)}, 'Open sidepanel'`
-
-The point is that if you can think of the current url as an object, you can supply a simple function to change that url.
-
-Also, the router assumes you are using some kind of immutable data and shouldComponentUpdate optimizations. Therefore, it provides you with an `onChange`event that lets you update your data-store when the url changes. However, it provides you with only the delta of changes so that you can do a minimal update to your data-store.
-
-```
-// URL before clicking a link to open the sidepanel:
-www.my-app.com/week?date=2016-10-31
-
-// URL after:
-www.my-app.com/week?date=2016-10-31&showSidepanel=true
-
-// Your onChange callback is called with:
-// delta = {showSidepanel: true}
-onChange = (delta) ->
-	...
+// newUrl = 'myapp.com/Reports/2017/feb?sort=asc&items=2&sidepanel=false'
 ```
 
+#### react-functional-router is built on exactly these two principles!
 
-## Examples
+It gives you the simplest router api ever, and saves some complexity-space in your brain to put where it's better needed than routing :)
+
+
+#### Semi-full Flux/Redux example
 
 ```
-render: ->
-	div {},
+const store = createFluxStore() // Generic flux store to show the principle
 
-		# using functions to create links changing the query string
-		Link {to: assoc('showPanel', true)}, 'Open panel'
-		Link {to: dissoc('showPanel')}, 'Hide panel'
+const router = createRouter({onUrlChange: (delta, url) => {
+  // delta = only the changes eg. {sidepanel: false}
+  // url = full object eg. {path0, path1, path2, sort, items, sidepanel}
+  store.setData({urlObject: url})
+}})
 
-		# using page to change the "page" part of the url
-		# e.g.  www.my-app.com/[...]?a=1&b=2
-		Link {page: ''}, 'Goto Home page'
-		Link {page: 'profile'}, 'Goto Profile page'
-		Link {page: 'logout'}, 'Logout'
+const App = () => (
+  <RouterProvider router={router}>
+    <FluxProvider store={store}>
+      <Body />
+    </FluxProvider>
+  </RouterProvider>
+)
 
-		# using both
-		Link {page: 'day', to: merge(__, {date: '2016-11-01'}}), 'Open dayview in November'
+const Body = connectToFlux()(({urlObject}) => {
+  const {path0: page} = urlObject
+  <div>
+     {(() => {
+        switch(page) {
+          case 'Report':
+            return <ReportPage />
+          case 'Profile':
+            return <ProfilePage />
+          default:
+            return <NotFoundPage />
+        }
+      })()}
+  </div>
+})
+
+const ReportPage = connectToFlux()(({urlObject, reportData}) => {
+  const {path0: page, path1: year, path2: month} = urlObject
+  <div>
+  </div>
+})
+
+```
+Note that we are here putting the url data in our flux store to have both application data and url data in the same place.
+
+#### Semi-full Apollo example
+
+```
+const router = createRouter()
+
+const App = () => (
+  <RouterProvider router={router}>
+    <Body />
+  </RouterProvider>
+)
+
+const Body = withRouter(({url}) => {
+  const {path0: page} = url
+  return (
+    <div>
+      {(() => {
+        switch(page) {
+          case 'Report':
+            return <ReportPage />
+          case 'Profile':
+            return <ProfilePage />
+          default:
+            return <NotFoundPage />
+        }
+      })()}
+    </div>
+  )
+})
+
+const ReportPage = withRouter(({url: {path1: year}}) => {
+  <Query query=gql`
+    query reportByYear($year: Int!) {
+      reportByYear(year: $year) {
+        id
+        name
+        monthlyData
+      }
+    }
+    variables={{year}}
+  `>
+    {({reportByYear}) => (
+      <div> ... </div>
+    )}
+  </Query>
+})
+
 ```
 
+
+
+See full examples in the [examples folder](/examples)
+
+---
+
+> **NOTE: This is experimental**. If you like the idea of the functional API, you could just create two helpers `changeUrlWithFunction` and `parseUrlIntoObject` and make them work with a more stable router like [React-Router](https://reacttraining.com/react-router/)

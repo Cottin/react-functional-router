@@ -1,4 +1,6 @@
-exports.Link = require './Link'
 exports.createRouter = require './createRouter'
 exports.RouterProvider = require './RouterProvider'
+exports.Router = require './Router'
+exports.withRouter = require './withRouter'
+exports.Link = require './Link'
 exports.utils = require './utils'

@@ -1,4 +1,4 @@
-Very simple router for react with a functional api
+# React Functional Router
 
 #### What if the url was just an object?
 

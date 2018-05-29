@@ -40,6 +40,8 @@ const router = createRouter({onUrlChange: (delta, url) => {
   // delta = only the changes eg. {sidepanel: false}
   // url = full object eg. {path0, path1, path2, sort, items, sidepanel}
   store.setData({urlObject: url})
+  // Note that we are here putting the url data in our flux store to have
+  // both application data and url data in the same place.
 }})
 
 const App = () => (
@@ -73,7 +75,6 @@ const ReportPage = connectToFlux()(({urlObject, reportData}) => {
 })
 
 ```
-Note that we are here putting the url data in our flux store to have both application data and url data in the same place.
 
 #### Semi-full Apollo example
 

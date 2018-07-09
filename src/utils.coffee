@@ -43,7 +43,7 @@ buildUrl = (arg, state) ->
 # s -> s
 # Splits the location.pathname into parts
 extractPathParts = (pathname) ->
-	if pathname == '/' then {}
+	if pathname == '/' then return {}
 	[p0, p1, p2, p3, p4] = doto pathname, replace(/^\//, ''), split('/')
 	paths = {}
 	if p0 then paths.path0 = p0

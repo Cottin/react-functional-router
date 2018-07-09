@@ -128,6 +128,92 @@ const ReportPage = withRouter(({url: {path1: year}}) => {
 
 See full examples in the [examples folder](/examples)
 
----
 
 > **NOTE: This is experimental**. If you like the idea of the functional API, you could just create two helpers `changeUrlWithFunction` and `parseUrlIntoObject` and make them work with a more stable router like [React-Router](https://reacttraining.com/react-router/)
+
+---
+---
+---
+
+# Docs
+
+
+### createRouter and RouterProvider
+
+```
+import { createRouter, RouterProvider } from 'react-functional-router'
+
+const router = createRouter() // takes no arguments
+
+const App = () => (
+  <RouterProvider router={router}> // only one propery: `router`
+    ...
+  </RouterProvider>
+)
+```
+[See example](/examples/simple/Body.coffee)
+
+
+### Link
+
+```
+import { Link } from 'react-functional-router'
+
+const Body = () => (
+  <div>
+    <Link path="/">Home</Link>
+    <Link path="/Customer">Customer page</Link>
+    <Link query={{query: {popup: true}}}>Open popup</Link>
+    <Link query={{query: {sidepanel: (x) => x ? undefined : true}}}>Toggle sidepanel</Link>
+  </div>
+)
+```
+
+[See example](/examples/simple/Body.coffee)
+
+### withRouter
+```
+import { withRouter } from 'react-functional-router'
+
+const Body = withRouter(({url: {path0: page, path1: period, sort}}) => (
+  <div>
+    {
+      page == 'Report' && <ReportPage period={period} sort={sort} />
+    }
+  </div>
+))
+```
+
+[See example](/examples/simple/Body.coffee)
+
+### Router
+```
+import { withRouter } from 'react-functional-router'
+
+const Body = () => (
+  <Router>
+    {
+      ({url: {path0: page}}) => (
+        switch (page) {
+          case undefined: <HomePage />
+          case 'Customer': <CustomerPage />
+          default: <NotFoundPage />
+        }
+      )
+    }
+  </div>
+)
+```
+[See example](/examples/simple/Body.coffee)
+
+### utils
+```
+import { utils } from 'react-functional-router'
+
+const buildUrl = (arg, state) =>
+const extractPathParts = (pathname) =>
+const extractQuery = (locationSearch) =>
+const navigate = navigate = (url) =>
+const navigateCallback = (url) => (e) =>
+```
+[See docs directly in code](/src/utils.coffee)

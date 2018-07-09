@@ -87,7 +87,7 @@ _isModifiedEvent = (e) -> !!(e.metaKey || e.altKey || e.ctrlKey || e.shiftKey)
 # s -> null
 # Does a "modern" navigate by using history.pushState and dispatching a
 # 'popostate' event on the window object
-navigate = navigate = (url) ->
+navigate = (url) ->
 	# idea from https://github.com/larrymyers/react-mini-router/blob/master/lib/navigate.js
 	window.history.pushState {}, '', url
 	window.dispatchEvent new window.Event('popstate')

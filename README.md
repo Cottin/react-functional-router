@@ -151,7 +151,7 @@ const App = () => (
   </RouterProvider>
 )
 ```
-[See example](/examples/simple/Body.coffee)
+[See example](/examples/simple/src/ui/Body.coffee)
 
 
 ### Link
@@ -169,7 +169,7 @@ const Body = () => (
 )
 ```
 
-[See example](/examples/simple/Body.coffee)
+[See example](/examples/simple/src/ui/Body.coffee)
 
 ### withRouter
 ```
@@ -184,7 +184,7 @@ const Body = withRouter(({url: {path0: page, path1: period, sort}}) => (
 ))
 ```
 
-[See example](/examples/simple/Body.coffee)
+[See example](/examples/simple/src/ui/Body.coffee)
 
 ### Router
 ```
@@ -204,7 +204,7 @@ const Body = () => (
   </div>
 )
 ```
-[See example](/examples/simple/Body.coffee)
+[See example](/examples/simple/src/ui/Body.coffee)
 
 ### utils
 ```

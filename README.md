@@ -213,7 +213,7 @@ import { utils } from 'react-functional-router'
 const buildUrl = (arg, state) =>
 const extractPathParts = (pathname) =>
 const extractQuery = (locationSearch) =>
-const navigate = navigate = (url) =>
+const navigate = (url) =>
 const navigateCallback = (url) => (e) =>
 ```
 [See docs directly in code](/src/utils.coffee)

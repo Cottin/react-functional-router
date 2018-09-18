@@ -188,7 +188,7 @@ const Body = withRouter(({url: {path0: page, path1: period, sort}}) => (
 
 ### Router
 ```
-import { withRouter } from 'react-functional-router'
+import { Router } from 'react-functional-router'
 
 const Body = () => (
   <Router>

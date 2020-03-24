@@ -1,6 +1,6 @@
 {
   "name": "react-functional-router",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A very simple router for react with a functional api",
   "main": "lib/index.js",
   "scripts": {
@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "ramda": "^0.22.1",
-    "ramda-extras": "^0.2.26"
+    "ramda-extras": "^0.4.11",
+    "react": "^16.13.0"
   },
   "peerDependencies": {
     "react": "^16.3.0"

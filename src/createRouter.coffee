@@ -1,5 +1,5 @@
-{isEmpty, path, type, without} = R = require 'ramda' #auto_require:ramda
-{diff, change} = require 'ramda-extras' #auto_require:ramda-extras
+{isEmpty, path, type, without} = R = require 'ramda' #auto_require: ramda
+{change, diff} = require 'ramda-extras' #auto_require: ramda-extras
 
 utils = require './utils'
 

@@ -1,18 +1,27 @@
-{has, join, map, omit, path, replace, split, toPairs, type} = require 'ramda' #auto_require:ramda
-{change, doto, fzipWith} = require 'ramda-extras' #auto_require:ramda-extras
+{has, isEmpty, join, map, match, omit, path, pickBy, reject, replace, split, test, toPairs, type, zipWith} = R = require 'ramda' #auto_require: ramda
+{change, doto, $, isNilOrEmpty} = RE = require 'ramda-extras' #auto_require: ramda-extras
+[] = [] #auto_sugar
+qq = (f) -> console.log match(/return (.*);/, f.toString())[1], f()
+qqq = (f) -> console.log match(/return (.*);/, f.toString())[1], JSON.stringify(f(), null, 2)
+_ = (...xs) -> xs
 
 ##### DATA #####################################################################
 
 # [k, v] -> s
 # Takes a key value pair and returns their query string representation
-_kvToQuery = ([k, v]) -> "#{k}=#{v}"
+_kvToQuery = ([k, v]) ->
+	if type(v) == 'Array'
+		if isEmpty v then ""
+		else "#{k}=[#{$ v, join(',')}]"
+	else "#{k}=#{v}"
 
 # o -> s
 # Takes an object and returns it's "query string equivalent"
 # e.g. toQueryString {page: 'login', user: 'Max'} returns '?page=login&user=Max'
 toQueryString = (o) ->
 	if !o then return ''
-	return '?' + doto o, toPairs, map(_kvToQuery), join('&')
+	res = $ o, toPairs, map(_kvToQuery), reject(isNilOrEmpty), join('&')
+	return if isEmpty res then '' else '?' + res
 
 # helper to apply x to v or just return v
 _change = (x, v) ->
@@ -27,15 +36,18 @@ buildUrl = (arg, state) ->
 
 	if arg.path
 		nextPaths = doto (arg.path || ''), replace(/^\//, ''), split(/\//)
-		newPaths = fzipWith nextPaths, [path0, path1, path2, path3, path4], (cur, next) ->
+		zipper = (next, cur) ->
 			if next == '*' then cur
 			else next
-
+		newPaths = zipWith zipper, nextPaths, [path0, path1, path2, path3, path4]
 		newPath = '/' + join '/', newPaths
 
 	state_ = omit ['path', 'path0', 'path1', 'path2', 'path3', 'path4'], state
 	newQuery =
-		if has 'query', arg then toQueryString change(arg.query, state_)
+		if has 'query', arg
+			if arg.query == undefined
+				toQueryString $ state_, pickBy (v, k) -> test /^path\d?$/, k
+			else toQueryString change(arg.query, state_)
 		else toQueryString state_
 
 	return (newPath || state.path) + newQuery
@@ -58,6 +70,9 @@ _autoParse = (val) ->
 	if !isNaN(val) then Number(val)
 	else if val == 'true' then true
 	else if val == 'false' then false
+	else if test /^\[.*\]$/, val # arrays eg. "[1, 2]" --> [1, 2]
+		if val == '[]' then []
+		else $ val[1...val.length-1], split(','), map _autoParse
 	else val
 
 # s -> {k:v}

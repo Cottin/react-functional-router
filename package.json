@@ -2,12 +2,13 @@
   "name": "react-functional-router",
   "version": "0.2.2",
   "description": "A very simple router for react with a functional api",
-  "main": "lib/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "mocha 'src/**/test*.coffee' --watch --compilers coffee:coffeescript/register",
-    "clean": "rimraf lib",
-    "build": "coffee -o lib/ -c src/",
-    "dist": "npm run clean && npm run build"
+    "clean": "rimraf *.js",
+    "build": "coffee -o ./ -c src/",
+    "dist": "npm run clean && npm run build",
+    "pub": "npm run dist && npm publish && npm run clean"
   },
   "directories": {
     "example": "examples"

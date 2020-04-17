@@ -18,15 +18,15 @@ class Body extends React.Component
 			_ 'br'
 			_ 'div', {},
 				_ 'div', {}, 'MENU links:'
-				_ Link, {path: '/'}, 'Home'
+				_ Link, {link: {path0: undefined}}, 'Home'
 				_ 'br'
-				_ Link, {path: '/Customer'}, 'Customer'
+				_ Link, {link: {path0: '/Customer'}}, 'Customer'
 			_ 'br'
 			_ 'div', {},
 				_ 'div', {}, 'Example links:'
-				_ Link, {query: {name: 'World!'}}, 'Name = World!'
+				_ Link, {link: {name: 'World!'}}, 'Name = World!'
 				_ 'br'
-				_ Link, {query: {sidepanel: (x) -> if x then undefined else true}},
+				_ Link, {link: {sidepanel: (x) -> if x then undefined else true}},
 					'Toggle sidepanel'
 				_ 'br'
 
@@ -54,16 +54,16 @@ CustomerPage = withRouter ({url: {path1: mode}}) ->
 CustomerDetailsView = withRouter ({nav}) ->
 	_ 'div', {},
 		_ 'h2', {}, 'Customer details'
-		_ 'button', {onClick: -> nav({path: '/*/edit'})}, 'Edit'
+		_ 'button', {onClick: -> nav({path1: 'edit'})}, 'Edit'
 		_ 'br'
 		_ 'br'
-		_ Link, {path: '/*/new'}, '+ Create new customer'
+		_ Link, {link: {path1: 'new'}}, '+ Create new customer'
 
 CustomerFormView = () ->
 	_ 'div', {},
 		_ 'h2', {}, 'Customer form'
 		_ 'br'
-		_ Link, {path: '/*'}, 'Cancel edit'
+		_ Link, {link: {path1: undefined}}, 'Cancel edit'
 
 NotFoundPage = () ->
 	_ 'div', {},

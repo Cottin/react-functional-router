@@ -1,4 +1,4 @@
-{append, dec, empty, inc, match, path, remove, without} = R = require 'ramda' #auto_require: ramda
+{all, always, append, empty, inc, match, path, remove, without} = R = require 'ramda' #auto_require: ramda
 {cc} = RE = require 'ramda-extras' #auto_require: ramda-extras
 [] = [] #auto_sugar
 qq = (f) -> console.log match(/return (.*);/, f.toString())[1], f()
@@ -16,34 +16,21 @@ state2 = {path: '/a/b/c', path0: 'a', path1: 'b', path2: 'c', q1: [1, 2]}
 
 describe 'utils', ->
 	describe 'buildUrl', ->
-		it 'star + inc', ->
-			eq '/aa/b/cc/dd/e?q1=2&q3=3',
-				buildUrl {path: '/aa/*/cc/dd/e', query: {q1: inc, q3: 3}}, state1
+		it 'inc', ->
+			eq '/aa/b/cc/dd?q1=2&q3=3',
+				buildUrl {path0: 'aa', path2: 'cc', path3: 'dd', q1: inc, q3: 3}, state1
 
 		it 'remove + undefined', ->
 			eq '/a/bb?q3=3',
-				buildUrl {path: '/*/bb', query: {q1: undefined, q3: 3}}, state1
-
-		it 'remove query', ->
-			eq '/a/bb',
-				buildUrl {path: '/*/bb', query: undefined}, state1
-
-		# it 'assoc new query', ->
-		# 	eq '/a/bb?q2=2',
-		# 		buildUrl {path: '/*/bb', query: {$assoc: {q2: 2}}}, state1
-
-		it 'only query', ->
-			eq '/a/b/c?q1=0&q2=2',
-				buildUrl {query: {q1: dec, q2: 2}}, state1
-
-		it 'only path', ->
-			eq '/a/bb/c?q1=1',
-				buildUrl {path: '/*/bb/*'}, state1
+				buildUrl {path1: 'bb', path2: undefined, q1: undefined, q3: 3}, state1
+		it 'remove all', ->
+			eq '/aa?q8=1',
+				buildUrl always({path0: 'aa', q8: 1}), state1
 
 		it 'array', ->
-			eq '/a/b/c?q1=[1,2,3]', buildUrl {query: {q1: append(3)}}, state2
-			eq '/a/b/c?q1=[1]', buildUrl {query: {q1: without([2])}}, state2
-			eq '/a/b/c?q2=1', buildUrl {query: {q1: without([2])}}, {...state2, q2: 1, q1: []}
+			eq '/a/b/c?q1=[1,2,3]', buildUrl {q1: append(3)}, state2
+			eq '/a/b/c?q1=[1]', buildUrl {q1: without([2])}, state2
+			eq '/a/b/c?q2=1', buildUrl {q1: without([2])}, {...state2, q2: 1, q1: []}
 
 	describe 'extractPathParts', ->
 		it 'simple case', ->

@@ -36,9 +36,9 @@ CinemaList = withRouter ({url: {first}}) ->
 	,
 		({ loading, error, data }) ->
 			_ 'div', {},
-				_ Link, {query: {first: 5}}, '6 cinemas'
+				_ Link, {link: {first: 5}}, '6 cinemas'
 				_ 'br'
-				_ Link, {query: {first: 10}}, '10 cinemas'
+				_ Link, {link: {first: 10}}, '10 cinemas'
 				_ 'br'
 				_ 'br'
 				loading && _ 'div', {}, 'Loading...'

@@ -1,4 +1,4 @@
-{has, isEmpty, join, map, match, omit, path, pickBy, reject, replace, split, test, toPairs, type, zipWith} = R = require 'ramda' #auto_require: ramda
+{isEmpty, join, map, match, omit, path, reject, replace, split, test, toPairs, type} = R = require 'ramda' #auto_require: ramda
 {change, doto, $, isNilOrEmpty} = RE = require 'ramda-extras' #auto_require: ramda-extras
 [] = [] #auto_sugar
 qq = (f) -> console.log match(/return (.*);/, f.toString())[1], f()
@@ -16,41 +16,33 @@ _kvToQuery = ([k, v]) ->
 	else "#{k}=#{v}"
 
 # o -> s
-# Takes an object and returns it's "query string equivalent"
-# e.g. toQueryString {page: 'login', user: 'Max'} returns '?page=login&user=Max'
-toQueryString = (o) ->
-	if !o then return ''
-	res = $ o, toPairs, map(_kvToQuery), reject(isNilOrEmpty), join('&')
+# Takes an object and returns it's "query string equivalent" remove the path keys
+# eg. toQueryString {page: 'login', user: 'Max', path0: 'week'} returns '?page=login&user=Max'
+toQueryString = (state) ->
+	state_ = omit ['path', 'path0', 'path1', 'path2', 'path3', 'path4'], state
+	if !state_ then return ''
+	res = $ state_, toPairs, map(_kvToQuery), reject(isNilOrEmpty), join('&')
 	return if isEmpty res then '' else '?' + res
 
-# helper to apply x to v or just return v
-_change = (x, v) ->
-	if type(x) == 'Function' then x v
-	else x
+# o -> s
+# Takes the state and returns the /path0/path1/path2 representation for the url
+# eg. {path0: 'report', path1: 'month', showAll: true} returns '/report/month'
+toPath = (state) ->
+	path = ''
+	for i in [0...5]
+		pathI = state["path#{i}"]
+		if pathI then path += '/' + pathI else break
+	return path
 
 # f, s|f..., o -> s
 # Builds a url by applying f to current query in state and replacing path or
 # pathparts in state.
 buildUrl = (arg, state) ->
-	{path0, path1, path2, path3, path4} = state
+	if !arg then throw new Error 'arg cannot be undefined'
+	{path, path0, path1, path2, path3, path4} = arg
 
-	if arg.path
-		nextPaths = doto (arg.path || ''), replace(/^\//, ''), split(/\//)
-		zipper = (next, cur) ->
-			if next == '*' then cur
-			else next
-		newPaths = zipWith zipper, nextPaths, [path0, path1, path2, path3, path4]
-		newPath = '/' + join '/', newPaths
-
-	state_ = omit ['path', 'path0', 'path1', 'path2', 'path3', 'path4'], state
-	newQuery =
-		if has 'query', arg
-			if arg.query == undefined
-				toQueryString $ state_, pickBy (v, k) -> test /^path\d?$/, k
-			else toQueryString change(arg.query, state_)
-		else toQueryString state_
-
-	return (newPath || state.path) + newQuery
+	newState = change arg, state
+	return toPath(newState) + toQueryString newState
 
 # s -> s
 # Splits the location.pathname into parts

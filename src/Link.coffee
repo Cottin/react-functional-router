@@ -9,13 +9,15 @@ _ = React.createElement
 
 Link = (props) ->
 	_ Context.Consumer, {}, ({router}) ->
-		url = router.buildUrl {path: props.path, query: props.query}
-		props_ = fomit props, ['query', 'path']
+		url = router.buildUrl props.link
+		props_ = fomit props, ['link', 'path']
+		onClick = (e) ->
+			if !isNil props.onClick then props.onClick(e)
+			router.navigateCallback(url)(e)
+
 		props__ = merge props_,
 			href: url
-			onClick: (e) ->
-				if !isNil props.onClick then props.onClick(e)
-				router.navigateCallback(url)(e)
+			onClick: if props.target != '_blank' then onClick
 		_ 'a', props__
 
 

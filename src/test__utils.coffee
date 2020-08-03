@@ -1,4 +1,4 @@
-{all, always, append, empty, inc, match, path, remove, without} = R = require 'ramda' #auto_require: ramda
+all = require 'ramda/es/all'; always = require 'ramda/es/always'; append = require 'ramda/es/append'; empty = require 'ramda/es/empty'; inc = require 'ramda/es/inc'; match = require 'ramda/es/match'; path = require 'ramda/es/path'; remove = require 'ramda/es/remove'; without = require 'ramda/es/without'; #auto_require: srcramda
 {cc} = RE = require 'ramda-extras' #auto_require: ramda-extras
 [] = [] #auto_sugar
 qq = (f) -> console.log match(/return (.*);/, f.toString())[1], f()

@@ -1,6 +1,6 @@
 React = require 'react'
-{prop, props} = R = require 'ramda' #auto_require:ramda
-{} = require 'ramda-extras' #auto_require:ramda-extras
+prop = require('ramda/es/prop').default; props = require('ramda/es/props').default; #auto_require: srcramda
+{} = require 'ramda-extras' #auto_require: ramda-extras
 
 Context = require './Context'
 
@@ -16,10 +16,14 @@ class RouterProvider extends React.Component
 		@state = {url: @props.router.getState(), router: @router}
 
 	componentDidMount: ->
+		# @router.initialize()
 		@unsubscribe = @router.subscribe (state, delta) =>
 			@setState {url: state}
 
-	componentWillUnmount: -> @router.destroy()
+	# Testing quick workaround to not destroy to make hot reloading work better.
+	# Better would be to make sure the logic is correct and works but probably we'd re-write it
+	# with hooks at same time.
+	# componentWillUnmount: -> @router.destroy()
 
 	render: ->
 		_ Context.Provider, {value: @state},

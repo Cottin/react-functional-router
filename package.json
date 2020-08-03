@@ -1,20 +1,22 @@
 {
   "name": "react-functional-router",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A very simple router for react with a functional api",
-  "main": "index.js",
+  "main": "src/index.coffee",
   "scripts": {
     "test": "mocha 'src/**/test*.coffee' --watch --compilers coffee:coffeescript/register",
     "clean": "rimraf *.js",
     "build": "coffee -o ./ -c src/",
-    "dist": "npm run clean && npm run build",
-    "pub": "npm run dist && npm publish && npm run clean"
+    "dist": "npm run clean && npm run build && npm run sedjs",
+    "pub": "npm run dist && npm publish && npm run clean && npm run sedcoffee",
+    "sedjs": "sed -i '' -e 's/index.coffee\"/index.js\"/g' ./package.json",
+    "sedcoffee": "sed -i '' -e 's/index.js\"/index.coffee\"/g' ./package.json"
   },
   "directories": {
     "example": "examples"
   },
   "dependencies": {
-    "ramda": "^0.22.1",
+    "ramda": "^0.27.0",
     "ramda-extras": "^0.4.13",
     "react": "^16.13.0"
   },

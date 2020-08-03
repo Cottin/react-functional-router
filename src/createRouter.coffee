@@ -1,52 +1,55 @@
-{isEmpty, path, type, without} = R = require 'ramda' #auto_require: ramda
+isEmpty = require('ramda/es/isEmpty').default; path = require('ramda/es/path').default; type = require('ramda/es/type').default; without = require('ramda/es/without').default; #auto_require: srcramda
 {change, diff} = require 'ramda-extras' #auto_require: ramda-extras
 
 utils = require './utils'
 
 
 createRouter = () ->
-	_state = {path: '/'}
+	return new Router()
 
-	_listeners = []
+class Router
+	constructor: () ->
+		@state = {path: '/'}
+		@listeners = []
+		window.addEventListener 'popstate', @_onUrlChange
+		@_onUrlChange() # to load initial state of url
 
-	_onUrlChange = ->
+	_onUrlChange: =>
 		path = location.pathname
 		paths = utils.extractPathParts path
 		query = utils.extractQuery location.search
 		urlState = {path, ...paths, ...query}
-		delta = diff _state, urlState
+		delta = diff @state, urlState
 		if isEmpty delta then return
-		_state = change delta, _state
-		_listeners.forEach (l) -> l _state, delta
+		@state = change delta, @state
+		@listeners.forEach (l) => l @state, delta
 		return true
 
-	window.addEventListener 'popstate', _onUrlChange
-	_onUrlChange() # to load initial state of url
 
 	buildUrl: (args) ->
-		utils.buildUrl args, _state
+		utils.buildUrl args, @state
 
 	navigate: (arg) ->
 		url =
 			if type(arg) == 'String' then arg
-			else utils.buildUrl arg, _state
+			else utils.buildUrl arg, @state
 		return utils.navigate url
 
 	navigateCallback: (arg) ->
 		url =
 			if type(arg) == 'String' then arg
-			else utils.buildUrl arg, _state
+			else utils.buildUrl arg, @state
 		return utils.navigateCallback url
 
 	subscribe: (listener) ->
-		_listeners.push listener
-		return () -> _listeners = without listener, _listeners
+		@listeners.push listener
+		return () -> @listeners = without listener, @listeners
 
-	getState: () -> _state
+	getState: () -> @state
 
 	# call this when stop using the router (e.g. componentWillUnmount)
 	destroy: ->
-		window.removeEventListener 'popstate', _onUrlChange
-		_listeners = null
+		window.removeEventListener 'popstate', @_onUrlChange
+		@listeners = null
 
 module.exports = createRouter

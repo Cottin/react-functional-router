@@ -1,4 +1,4 @@
-{isEmpty, join, map, match, omit, path, reject, replace, split, test, toPairs, type} = R = require 'ramda' #auto_require: ramda
+isEmpty = require('ramda/es/isEmpty').default; join = require('ramda/es/join').default; map = require('ramda/es/map').default; match = require('ramda/es/match').default; omit = require('ramda/es/omit').default; path = require('ramda/es/path').default; reject = require('ramda/es/reject').default; replace = require('ramda/es/replace').default; split = require('ramda/es/split').default; test = require('ramda/es/test').default; toPairs = require('ramda/es/toPairs').default; type = require('ramda/es/type').default; #auto_require: srcramda
 {change, doto, $, isNilOrEmpty} = RE = require 'ramda-extras' #auto_require: ramda-extras
 [] = [] #auto_sugar
 qq = (f) -> console.log match(/return (.*);/, f.toString())[1], f()

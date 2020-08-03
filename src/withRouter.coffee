@@ -1,6 +1,6 @@
 React = require 'react'
-{} = R = require 'ramda' #auto_require:ramda
-{} = require 'ramda-extras' #auto_require:ramda-extras
+ #auto_require: srcramda
+{} = require 'ramda-extras' #auto_require: ramda-extras
 
 Context = require './Context'
 Router = require './Router'

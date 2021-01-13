@@ -1,8 +1,8 @@
-all = require 'ramda/es/all'; always = require 'ramda/es/always'; append = require 'ramda/es/append'; empty = require 'ramda/es/empty'; inc = require 'ramda/es/inc'; match = require 'ramda/es/match'; path = require 'ramda/es/path'; remove = require 'ramda/es/remove'; without = require 'ramda/es/without'; #auto_require: srcramda
+all = require('ramda/src/all'); always = require('ramda/src/always'); append = require('ramda/src/append'); empty = require('ramda/src/empty'); inc = require('ramda/src/inc'); match = require('ramda/src/match'); path = require('ramda/src/path'); remove = require('ramda/src/remove'); without = require('ramda/src/without'); #auto_require: srcramda
 {cc} = RE = require 'ramda-extras' #auto_require: ramda-extras
 [] = [] #auto_sugar
 qq = (f) -> console.log match(/return (.*);/, f.toString())[1], f()
-qqq = (f) -> console.log match(/return (.*);/, f.toString())[1], JSON.stringify(f(), null, 2)
+qqq = (...args) -> console.log ...args
 _ = (...xs) -> xs
 
 {eq, deepEq} = require 'testhelp'#auto_require:testhelp

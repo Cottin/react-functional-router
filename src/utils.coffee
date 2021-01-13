@@ -1,8 +1,8 @@
-isEmpty = require('ramda/es/isEmpty').default; join = require('ramda/es/join').default; map = require('ramda/es/map').default; match = require('ramda/es/match').default; omit = require('ramda/es/omit').default; path = require('ramda/es/path').default; reject = require('ramda/es/reject').default; replace = require('ramda/es/replace').default; split = require('ramda/es/split').default; test = require('ramda/es/test').default; toPairs = require('ramda/es/toPairs').default; type = require('ramda/es/type').default; #auto_require: srcramda
+isEmpty = require('ramda/src/isEmpty'); join = require('ramda/src/join'); map = require('ramda/src/map'); match = require('ramda/src/match'); omit = require('ramda/src/omit'); path = require('ramda/src/path'); reject = require('ramda/src/reject'); replace = require('ramda/src/replace'); split = require('ramda/src/split'); test = require('ramda/src/test'); toPairs = require('ramda/src/toPairs'); type = require('ramda/src/type'); #auto_require: srcramda
 {change, doto, $, isNilOrEmpty} = RE = require 'ramda-extras' #auto_require: ramda-extras
 [] = [] #auto_sugar
 qq = (f) -> console.log match(/return (.*);/, f.toString())[1], f()
-qqq = (f) -> console.log match(/return (.*);/, f.toString())[1], JSON.stringify(f(), null, 2)
+qqq = (...args) -> console.log ...args
 _ = (...xs) -> xs
 
 ##### DATA #####################################################################

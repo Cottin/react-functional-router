@@ -9,8 +9,8 @@
     "build": "coffee -o ./ -c src/",
     "dist": "npm run clean && npm run build && npm run sedjs",
     "pub": "npm run dist && npm publish && npm run clean && npm run sedcoffee",
-    "sedjs": "sed -i '' -e 's/src\\\/index.coffee\"/index.js\"/g' ./package.json",
-    "sedcoffee": "sed -i '' -e 's/index.js\"/src\\\/index.coffee\"/g' ./package.json"
+    "sedjs": "sed -i '' -e 's/src\\/index.coffee\"/index.js\"/g' ./package.json",
+    "sedcoffee": "sed -i '' -e 's/index.js\"/src\\/index.coffee\"/g' ./package.json"
   },
   "directories": {
     "example": "examples"
@@ -18,7 +18,7 @@
   "dependencies": {
     "ramda": "^0.27.0",
     "ramda-extras": "^0.4.13",
-    "react": "^16.13.0"
+    "react": "^16.3.0"
   },
   "peerDependencies": {
     "react": "^16.3.0"
@@ -33,9 +33,9 @@
     "coffeescript": "^2.2.3",
     "dotenv": "^5.0.1",
     "html-webpack-plugin": "^2.30.1",
-    "webpack": "^3.10.0",
     "rimraf": "^2.4.3",
-    "testhelp": "^0.1.2"
+    "testhelp": "^0.1.2",
+    "webpack": "^3.10.0"
   },
   "repository": {
     "type": "git",
